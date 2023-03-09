@@ -24,8 +24,6 @@ export default {
   },
   mounted() {
     this.$EventBus.on('updateUrl',this.updateUrl);
-    // this.$store.commit('setting/setBaseUrl','https://stream.buaa-jj.cn/ff14/dancer.m3u8');
-    // this.$store.commit('setting/setPrivateKey','NeA6uWAsbny8owaB');
   }
 }
 </script>
