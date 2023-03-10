@@ -8,8 +8,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.10",
     "@element-plus/icons-vue": "^2.1.0",
+    "@vue/apollo-option": "^4.0.0-beta.4",
+    "axios": "^1.3.4",
     "element-plus": "^2.2.36",
+    "graphql": "^16.6.0",
+    "graphql-tag": "^2.12.6",
     "hls.js": "^1.3.4",
     "js-md5": "^0.7.3",
     "mitt": "^3.0.0",
