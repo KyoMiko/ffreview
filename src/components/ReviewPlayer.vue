@@ -24,6 +24,11 @@ export default {
   },
   mounted() {
     this.$EventBus.on('updateUrl',this.updateUrl);
+    document.addEventListener("visibilitychange",()=>{
+      if (document.hidden) {
+        this.$refs.video.pause();
+      }
+    })
   }
 }
 </script>
