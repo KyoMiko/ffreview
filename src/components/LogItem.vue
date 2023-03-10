@@ -51,10 +51,10 @@ export default {
       return `${m}:${s}`
     },
     startTimeHuman () {
-      return this.unixToHuman(new Date(this.startTimeUnix));
+      return this.unixToHuman(new Date(this.startTimeUnix - 30000));
     },
     endTimeHuman () {
-      return this.unixToHuman(new Date(this.endTimeUnix));
+      return this.unixToHuman(new Date(this.endTimeUnix + 10000));
     }
   }
 }

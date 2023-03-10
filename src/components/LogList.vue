@@ -8,7 +8,7 @@
         end-placeholder="直播结束时间"
         value-format="YYYYMMDDHHmmss"
     />
-    <el-input v-model="inputValue"></el-input>
+    <el-input v-model="inputValue"  placeholder="获取指定logs，输入如7a2WG3nk9Dyx8q6V"></el-input>
     <el-button @click="updateCode">查询</el-button>
     <ul style="overflow: auto;height: 250px;padding-inline-start: 5px">
       <li v-for="fight in fights" :key="fight.startTime" style="list-style: none;box-shadow: -2px 2px 5px gray;margin-bottom: 5px">
@@ -29,7 +29,7 @@ export default {
   data() {
     return {
       dateTime:[],
-      inputValue:"7a2WG3nk9Dyx8q6V",
+      inputValue:"",
       code:"",
       fights: [],
       startTime: 0
@@ -53,7 +53,7 @@ export default {
       if (newValue) {
         let fights = [...newValue.report.fights];
         fights = fights.filter((a) => {
-          return a.difficulty != null;
+          return a.difficulty;
         })
         this.fights = fights.sort((a,b) => {
           return b.startTime - a.startTime
@@ -68,12 +68,9 @@ export default {
         reportData {
           report(code: $code) {
             startTime,
-            endTime,
             fights{
               startTime,
               endTime,
-              bossPercentage,
-              fightPercentage,
               name,
               difficulty
             }
@@ -94,7 +91,4 @@ export default {
 </script>
 
 <style scoped>
-.date_picker {
-  width: calc(100% - 20px)
-}
 </style>
