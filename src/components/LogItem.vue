@@ -1,5 +1,5 @@
 <template>
-  <el-container>
+  <!-- <el-container>
     <el-main>
       <div>{{fightNameWithTrash}}</div>
     </el-main>
@@ -7,7 +7,16 @@
       {{fightLength}}
       <el-icon @click="onFightSelect"><VideoPlay /></el-icon>
     </el-aside>
-  </el-container>
+  </el-container> -->
+
+<el-card class="card" shadow="hover">
+  <div class="log-item">
+    <span class="log-name">{{fightNameWithTrash}}</span>
+    <el-button-group>
+      <el-button @click="onFightSelect" round>{{fightLength}}&nbsp;&nbsp;<el-icon><CaretRight /></el-icon></el-button>
+    </el-button-group>
+  </div>
+</el-card>
 </template>
 
 <script>
@@ -65,5 +74,21 @@ export default {
 </script>
 
 <style scoped>
+.log-item{
+  display: flex;
+  justify-content: space-between;
+}
+.log-name{
+  line-height: 30px;
+}
 
+.card{
+  margin-bottom: 1em;
+}
+</style>
+
+<style>
+.card > .el-card__body{
+  padding: 0.5em 1em 0.5em 1em !important;
+}
 </style>

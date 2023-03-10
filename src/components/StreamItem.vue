@@ -1,5 +1,5 @@
 <template>
-<el-container>
+<!-- <el-container>
   <el-main>
     <div>{{streamName}}</div>
   </el-main>
@@ -8,7 +8,17 @@
     <el-icon @click="onSettingClicked"><Setting /></el-icon>
     <el-icon @click="onDeleteClicked"><Delete /></el-icon>
   </el-aside>
-</el-container>
+</el-container> -->
+<el-card class="card" shadow="hover">
+  <div class="stream-item">
+    <span class="stream-name">{{streamName}}</span>
+    <el-button-group>
+      <el-button @click="onStreamSelect"  round><el-icon><VideoPlay /></el-icon></el-button>
+      <el-button @click="onSettingClicked"  round><el-icon><Setting /></el-icon></el-button>
+      <el-button @click="onDeleteClicked" round><el-icon><Delete /></el-icon></el-button>
+    </el-button-group>
+  </div>
+</el-card>
 </template>
 
 <script>
@@ -84,5 +94,21 @@ export default {
 </script>
 
 <style scoped>
+.stream-item{
+  display: flex;
+  justify-content: space-between;
+}
+.stream-name{
+  line-height: 30px;
+}
 
+.card{
+  margin-bottom: 1em;
+}
+</style>
+
+<style>
+.card > .el-card__body{
+  padding: 0.5em 1em 0.5em 1em !important;
+}
 </style>
