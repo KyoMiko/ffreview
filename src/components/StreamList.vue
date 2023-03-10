@@ -25,6 +25,9 @@
       <el-form-item label="阿里云密钥">
         <el-input v-model="setting.privateKey"/>
       </el-form-item>
+      <el-form-item label="直播延迟">
+        <el-input v-model="setting.latency" placeholder="可用此调节战斗开始时间错位，正负皆可，单位为秒"/>
+      </el-form-item>
       <el-button @click="updateSetting">提交</el-button>
       <el-button @click="isSetting=!isSetting">取消</el-button>
     </el-form>
@@ -47,7 +50,8 @@ export default {
         id:-1,
         streamName: "",
         baseUrl: "",
-        privateKey: ""
+        privateKey: "",
+        latency: 0
       }
     }
   },
@@ -58,6 +62,7 @@ export default {
       this.setting.streamName = data.streamName;
       this.setting.baseUrl = data.baseUrl;
       this.setting.privateKey = data.privateKey;
+      this.setting.latency = data.latency;
     },
     updateSetting() {
       const streamList = this.$refs.streamList;
@@ -66,6 +71,7 @@ export default {
       streamItem.setStreamName(this.setting.streamName);
       streamItem.setBaseUrl(this.setting.baseUrl);
       streamItem.setPrivateKey(this.setting.privateKey);
+      streamItem.setLatency(this.setting.latency);
       this.isSetting = false;
       this.saveStreamList();
     },
@@ -86,7 +92,6 @@ export default {
     saveStreamList() {
       const streamList = this.$refs.streamList;
       let streamArray = [];
-      console.log(streamList.length)
       for (let i = 0; i < streamList.length; i++) {
         const streamItem = streamList[i];
         streamArray.push(streamItem.saveStream());

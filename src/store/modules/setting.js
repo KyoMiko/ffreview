@@ -2,8 +2,9 @@ import md5 from 'js-md5'
 const state = {
     baseUrl:"", //直播流地址最后不包含/，如http://domain/app/stream.m3u8
     privateKey:"", //阿里云直播授权密钥
-    startTime: "", //开始时间
-    endTime: "", //结束时间
+    startTime: 0, //开始时间
+    endTime: 0, //结束时间
+    latency: 0, //直播延迟，单位为秒
     aliyunols: true //采用时移
 }
 
@@ -15,10 +16,15 @@ const mutations = {
         state.privateKey = privateKey;
     },
     setStartTime(state, startTime) {
-        state.startTime = startTime;
+        const date = new Date(startTime.substring(0,4),startTime.substring(4,6),startTime.substring(6,8),startTime.substring(8,10),startTime.substring(10,12),startTime.substring(12,14));
+        state.startTime = date.getTime() / 1000;
     },
     setEndTime(state, endTime) {
-        state.endTime = endTime;
+        const date = new Date(endTime.substring(0,4),endTime.substring(4,6),endTime.substring(6,8),endTime.substring(8,10),endTime.substring(10,12),endTime.substring(12,14));
+        state.endTime = date.getTime() / 1000;
+    },
+    setLatency(state, latency) {
+        state.latency = latency;
     }
 }
 
@@ -36,9 +42,7 @@ const getters = {
             return ""
         }
         if(state.aliyunols) {
-            return state.baseUrl + '?auth_key=' + getters.authKey + '&aliyunols=on&lhs_start_human_s_8=' + state.startTime + '&lhs_vodend_human_s_8=' + state.endTime;
-        }else {
-            return state.baseUrl + '?auth_key=' + getters.authKey;
+            return state.baseUrl + '?auth_key=' + getters.authKey + '&aliyunols=on&lhs_start_human_s_8=' + (state.startTime - state.latency) + '&lhs_vodend_human_s_8=' + (state.endTime - state.latency);
         }
     }
 }

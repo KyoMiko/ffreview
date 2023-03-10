@@ -19,7 +19,8 @@ export default {
     return {
       streamName: "",
       baseUrl: "",
-      privateKey: ""
+      privateKey: "",
+      latency: 0
     }
   },
   props: {
@@ -31,7 +32,8 @@ export default {
         id: this.id,
         streamName: this.streamName,
         baseUrl: this.baseUrl,
-        privateKey: this.privateKey
+        privateKey: this.privateKey,
+        latency: this.latency
       }
     },
     loadStream(data) {
@@ -41,6 +43,7 @@ export default {
           this.streamName = dataKey.streamName;
           this.baseUrl = dataKey.baseUrl;
           this.privateKey = dataKey.privateKey;
+          this.latency = dataKey.latency;
         }
       }
     },
@@ -50,7 +53,8 @@ export default {
             id: this.id,
             streamName: this.streamName,
             baseUrl: this.baseUrl,
-            privateKey: this.privateKey
+            privateKey: this.privateKey,
+            latency: this.latency
           });
     },
     onDeleteClicked() {
@@ -59,6 +63,7 @@ export default {
     onStreamSelect() {
       this.$store.commit('setting/setBaseUrl', this.baseUrl);
       this.$store.commit('setting/setPrivateKey', this.privateKey);
+      this.$store.commit('setting/setLatency', this.latency);
       this.$EventBus.emit('updateUrl');
       ElMessage('已选择\''+this.streamName+'\'直播源');
     },
@@ -70,12 +75,10 @@ export default {
     },
     setPrivateKey(privateKey){
       this.privateKey = privateKey;
+    },
+    setLatency(latency) {
+      this.latency = latency;
     }
-  },
-  mounted() {
-    this.$EventBus.on('setStreamName',this.setStreamName);
-    this.$EventBus.on('setBaseUrl',this.setBaseUrl);
-    this.$EventBus.on('setPrivateKey',this.setPrivateKey);
   }
 }
 </script>
