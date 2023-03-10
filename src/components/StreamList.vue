@@ -2,8 +2,9 @@
 <el-card>
   <template #header>
     <div class="card-header">
-      <span>直播列表</span>
+      <span style="margin-right: 10px">直播列表</span>
       <el-button class="button" @click="addStream"><el-icon><Plus /></el-icon></el-button>
+      <el-button class="button" @click="clearLocalStorage"><el-icon><Delete /></el-icon></el-button>
     </div>
   </template>
   <div v-show="!isSetting" style="height: 100%">
@@ -55,8 +56,8 @@ export default {
       this.isSetting = true;
       this.setting.id = data.id;
       this.setting.streamName = data.streamName;
-      this.setting.baseUrl = data.baseUrl?data.baseUrl:localStorage.getItem("baseUrl");
-      this.setting.privateKey = data.privateKey?data.privateKey:localStorage.getItem("privateKey");
+      this.setting.baseUrl = data.baseUrl;
+      this.setting.privateKey = data.privateKey;
     },
     updateSetting() {
       const streamList = this.$refs.streamList;
@@ -66,11 +67,11 @@ export default {
       streamItem.setBaseUrl(this.setting.baseUrl);
       streamItem.setPrivateKey(this.setting.privateKey);
       this.isSetting = false;
-      localStorage.setItem("baseUrl",this.setting.baseUrl);
-      localStorage.setItem("privateKey",this.setting.privateKey);
+      this.saveStreamList();
     },
     deleteStreamCallBack(data) {
       this.list.splice(this.list.indexOf(data),1);
+      this.saveStreamList();
     },
     addStream() {
       this.list.push(this.count);
@@ -79,11 +80,42 @@ export default {
         const streamItem = streamList[streamList.length - 1];
         streamItem.setStreamName('请设置直播信息');
         this.count++;
+        this.saveStreamList();
       })
+    },
+    saveStreamList() {
+      const streamList = this.$refs.streamList;
+      let streamArray = [];
+      console.log(streamList.length)
+      for (let i = 0; i < streamList.length; i++) {
+        const streamItem = streamList[i];
+        streamArray.push(streamItem.saveStream());
+      }
+      localStorage.setItem("streamArray",JSON.stringify(streamArray));
+      localStorage.setItem("count",this.count);
+      localStorage.setItem("list",JSON.stringify(this.list));
+    },
+    clearLocalStorage() {
+      localStorage.clear();
+      location.reload();
     }
   },mounted() {
     this.$EventBus.on('changeSetting',this.changeSettingCallBack)
     this.$EventBus.on('deleteStream',this.deleteStreamCallBack)
+    this.list = JSON.parse(localStorage.getItem("list"));
+    this.list = this.list ? this.list : [];
+    this.count = parseInt(localStorage.getItem("count"));
+    this.count = this.count ? this.count : 0;
+    let streamArray = JSON.parse(localStorage.getItem("streamArray"));
+    if (streamArray) {
+      nextTick(()=>{
+        const streamList = this.$refs.streamList;
+        for (let i = 0; i < streamList.length; i++) {
+          const streamItem = streamList[i];
+          streamItem.loadStream(streamArray);
+        }
+      })
+    }
   }
 }
 </script>

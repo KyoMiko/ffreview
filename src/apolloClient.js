@@ -5,7 +5,7 @@ async function getNewToken() {
     let response;
     const token = localStorage.getItem('OAuthToken');
     const expireTime = localStorage.getItem('OAuthTokenExpireTime');
-    if(!token || Date.now() < expireTime - 864000){
+    if(!token || Date.now() > expireTime - 864000){
         response = await axios({
             headers:{
                 'Content-Type': "application/x-www-form-urlencoded"
@@ -22,7 +22,6 @@ async function getNewToken() {
         })
         localStorage.setItem('OAuthToken',response.data.access_token)
         localStorage.setItem('OAuthTokenExpireTime',Date.now() + response.data.expires_in)
-        console.log(response)
     }
     return response;
 }

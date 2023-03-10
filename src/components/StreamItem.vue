@@ -26,6 +26,24 @@ export default {
     id: Number
   },
   methods: {
+    saveStream() {
+      return {
+        id: this.id,
+        streamName: this.streamName,
+        baseUrl: this.baseUrl,
+        privateKey: this.privateKey
+      }
+    },
+    loadStream(data) {
+      for (let i = 0; i < data.length; i++) {
+        let dataKey = data[i];
+        if (dataKey.id == this.id) {
+          this.streamName = dataKey.streamName;
+          this.baseUrl = dataKey.baseUrl;
+          this.privateKey = dataKey.privateKey;
+        }
+      }
+    },
     onSettingClicked() {
       this.$EventBus.emit('changeSetting',
           {
