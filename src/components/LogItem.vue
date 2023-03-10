@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-main>
-      <div>{{fightName}}</div>
+      <div>{{fightNameWithTrash}}</div>
     </el-main>
     <el-aside style="display: flex;flex-wrap: wrap;align-content: center;justify-content: center">
       {{fightLength}}
@@ -21,7 +21,8 @@ export default {
   props: {
     fightName: String,
     startTimeUnix: Number,
-    endTimeUnix: Number
+    endTimeUnix: Number,
+    difficulty: String
   },methods: {
     onFightSelect: function () {
       this.$EventBus.emit('selectFight',[this.startTimeHuman,this.endTimeHuman]);
@@ -55,6 +56,9 @@ export default {
     },
     endTimeHuman () {
       return this.unixToHuman(new Date(this.endTimeUnix + 10000));
+    },
+    fightNameWithTrash () {
+      return this.difficulty ? this.fightName : this.fightName + ' (Trash)'
     }
   }
 }

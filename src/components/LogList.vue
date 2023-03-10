@@ -13,7 +13,7 @@
     <ul style="overflow: auto;height: 250px;padding-inline-start: 5px">
       <li v-for="fight in fights" :key="fight.startTime" style="list-style: none;box-shadow: -2px 2px 5px gray;margin-bottom: 5px">
         <log-item ref="logList" :fight-name="fight.name" :start-time-unix="parseInt(fight.startTime) + startTime"
-        :end-time-unix="parseInt(fight.endTime) + startTime"></log-item>
+        :end-time-unix="parseInt(fight.endTime) + startTime" :difficulty="fight.difficulty"></log-item>
       </li>
     </ul>
   </div>
@@ -51,13 +51,20 @@ export default {
     },
     logs(newValue) {
       if (newValue) {
-        let fights = [...newValue.report.fights];
-        fights = fights.filter((a) => {
+        let allFights = [...newValue.report.fights];
+        let fights = allFights.filter((a) => {
           return a.difficulty;
         })
-        this.fights = fights.sort((a,b) => {
+        fights = fights.sort((a,b) => {
           return b.startTime - a.startTime
         });
+        let trash = allFights.filter((a) => {
+          return !a.difficulty;
+        })
+        trash = trash.sort((a,b) => {
+          return b.startTime - a.startTime
+        });
+        this.fights = [...fights,...trash]
         this.startTime = newValue.report.startTime;
       }
     }
