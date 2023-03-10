@@ -42,7 +42,7 @@ const getters = {
             return ""
         }
         if(state.aliyunols) {
-            return state.baseUrl + '?auth_key=' + getters.authKey + '&aliyunols=on&lhs_start_human_s_8=' + (state.startTime - state.latency) + '&lhs_vodend_human_s_8=' + (state.endTime - state.latency);
+            return state.baseUrl + '?auth_key=' + getters.authKey + '&aliyunols=on&lhs_start_unix_s_0=' + (state.startTime - state.latency) + '&lhs_vodend_unix_s_0=' + (state.endTime - state.latency);
         }
     }
 }
