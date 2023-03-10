@@ -38,7 +38,7 @@ export default {
       min = min < 10 ? "0" + min : min;
       let second = date.getSeconds();
       second = second < 10 ? "0" + second : second;
-      return `${year}${month}${day}${hour}${min}${second}`
+      return `${year}-${month}-${day} ${hour}:${min}:${second}`
     }
   },
   computed: {

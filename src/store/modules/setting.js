@@ -16,11 +16,11 @@ const mutations = {
         state.privateKey = privateKey;
     },
     setStartTime(state, startTime) {
-        const date = new Date(startTime.substring(0,4),startTime.substring(4,6),startTime.substring(6,8),startTime.substring(8,10),startTime.substring(10,12),startTime.substring(12,14));
+        const date = new Date(startTime);
         state.startTime = date.getTime() / 1000;
     },
     setEndTime(state, endTime) {
-        const date = new Date(endTime.substring(0,4),endTime.substring(4,6),endTime.substring(6,8),endTime.substring(8,10),endTime.substring(10,12),endTime.substring(12,14));
+        const date = new Date(endTime);
         state.endTime = date.getTime() / 1000;
     },
     setLatency(state, latency) {

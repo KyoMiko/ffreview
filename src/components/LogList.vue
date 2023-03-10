@@ -6,7 +6,7 @@
         range-separator="到"
         start-placeholder="直播开始时间"
         end-placeholder="直播结束时间"
-        value-format="YYYYMMDDHHmmss"
+        value-format="YYYY-MM-DD HH:mm:ss"
     />
     <el-input v-model="inputValue"  placeholder="获取指定logs，输入如7a2WG3nk9Dyx8q6V"></el-input>
     <el-button @click="updateCode">查询</el-button>
