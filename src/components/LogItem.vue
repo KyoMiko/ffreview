@@ -13,7 +13,11 @@
   <div class="log-item">
     <span class="log-name">{{fightNameWithTrash}}</span>
     <el-button-group>
-      <el-button @click="onFightSelect" round>{{fightLength}}&nbsp;&nbsp;<el-icon><CaretRight /></el-icon></el-button>
+      <el-button @click="onFightSelect" :class="isPlaying ? 'is-loading' : ''" round>
+        {{fightLength}}&nbsp;
+        <el-icon v-show="isPlaying"><Select /></el-icon>
+        <el-icon v-show="!isPlaying"><CaretRight /></el-icon>
+      </el-button>
     </el-button-group>
   </div>
 </el-card>
@@ -28,13 +32,15 @@ export default {
     }
   },
   props: {
+    id: Number,
     fightName: String,
     startTimeUnix: Number,
     endTimeUnix: Number,
-    difficulty: String
+    difficulty: String,
+    isPlaying: Boolean
   },methods: {
     onFightSelect: function () {
-      this.$EventBus.emit('selectFight',[this.startTimeHuman,this.endTimeHuman]);
+      this.$EventBus.emit('selectFight',{time:[this.startTimeHuman,this.endTimeHuman],id: this.id});
     },
     unixToHuman: function (date) {
       let year = date.getFullYear();

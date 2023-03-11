@@ -18,8 +18,10 @@
           </li>
         </ul> -->
         <ul style="padding-inline-start: 0px">
-          <li v-for="id in list" :key="id" style="list-style: none; padding-right: 1em;">
-            <stream-item ref="streamList" :id="id"></stream-item>
+          <li v-for="streamItem in streamList" :key="streamItem.id" style="list-style: none; padding-right: 1em;">
+            <stream-item ref="streamList" :id="streamItem.id" :stream-name="streamItem.streamName"
+            :base-url="streamItem.baseUrl" :latency="streamItem.latency" :private-key="streamItem.privateKey"
+            :is-playing="streamItem.id == selected"></stream-item>
           </li>
         </ul>
       </div>
@@ -54,9 +56,9 @@ export default {
   components: {StreamItem},
   data() {
     return {
-      list: [],
-      count: 0,
+      streamList: [],
       isSetting: false,
+      selected: -1, //选中的直播流的id
       setting: {
         id:-1,
         streamName: "",
@@ -76,40 +78,50 @@ export default {
       this.setting.latency = data.latency;
     },
     updateSetting() {
-      const streamList = this.$refs.streamList;
-      const index = this.list.indexOf(this.setting.id);
-      const streamItem = streamList[index];
-      streamItem.setStreamName(this.setting.streamName);
-      streamItem.setBaseUrl(this.setting.baseUrl);
-      streamItem.setPrivateKey(this.setting.privateKey);
-      streamItem.setLatency(this.setting.latency);
+      if(this.selected == this.setting.id) {
+        this.selected = -1;
+      }
+      for (let i = 0; i < this.streamList.length; i++) {
+        const streamItem = this.streamList[i];
+        if (streamItem.id == this.setting.id) {
+          streamItem.streamName = this.setting.streamName;
+          streamItem.baseUrl = this.setting.baseUrl;
+          streamItem.privateKey = this.setting.privateKey;
+          streamItem.latency = this.setting.latency;
+        }
+      }
       this.isSetting = false;
       this.saveStreamList();
     },
     deleteStreamCallBack(data) {
-      this.list.splice(this.list.indexOf(data),1);
+      if(this.selected == data) {
+        this.selected = -1;
+      }
+      for (let i = 0; i < this.streamList.length; i++) {
+        const streamItem = this.streamList[i];
+        if (streamItem.id == data) {
+          this.streamList.splice(data,1);
+        }
+      }
       this.saveStreamList();
     },
+    streamSelectedCallBack(data) {
+      this.selected = data;
+    },
     addStream() {
-      this.list.push(this.count);
-      nextTick(() => {
-        const streamList = this.$refs.streamList;
-        const streamItem = streamList[streamList.length - 1];
-        streamItem.setStreamName('请设置直播名称');
-        this.count++;
-        this.saveStreamList();
-      })
+      const id = this.streamList.length ? parseInt(this.streamList[this.streamList.length - 1].id) + 1 : 1;
+      let streamItem = {
+        id: id,
+        streamName: "请设置直播名称",
+        baseUrl: "",
+        privateKey: "",
+        latency: 0
+      };
+      this.streamList.push(streamItem);
+      this.saveStreamList();
     },
     saveStreamList() {
-      const streamList = this.$refs.streamList;
-      let streamArray = [];
-      for (let i = 0; i < streamList.length; i++) {
-        const streamItem = streamList[i];
-        streamArray.push(streamItem.saveStream());
-      }
-      localStorage.setItem("streamArray",JSON.stringify(streamArray));
-      localStorage.setItem("count",this.count);
-      localStorage.setItem("list",JSON.stringify(this.list));
+      localStorage.setItem("streamList",JSON.stringify(this.streamList));
     },
     clearLocalStorage() {
       localStorage.clear();
@@ -118,20 +130,9 @@ export default {
   },mounted() {
     this.$EventBus.on('changeSetting',this.changeSettingCallBack)
     this.$EventBus.on('deleteStream',this.deleteStreamCallBack)
-    this.list = JSON.parse(localStorage.getItem("list"));
-    this.list = this.list ? this.list : [];
-    this.count = parseInt(localStorage.getItem("count"));
-    this.count = this.count ? this.count : 0;
-    let streamArray = JSON.parse(localStorage.getItem("streamArray"));
-    if (streamArray) {
-      nextTick(()=>{
-        const streamList = this.$refs.streamList;
-        for (let i = 0; i < streamList.length; i++) {
-          const streamItem = streamList[i];
-          streamItem.loadStream(streamArray);
-        }
-      })
-    }
+    this.$EventBus.on('streamSelected', this.streamSelectedCallBack);
+    this.streamList = JSON.parse(localStorage.getItem("streamList"));
+    this.streamList = this.streamList ? this.streamList : [];
   }
 }
 </script>

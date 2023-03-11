@@ -23,9 +23,10 @@
       
       <el-scrollbar>
         <ul style="padding-inline-start: 0px; height: 220px;">
-          <li v-for="fight in fights" :key="fight.startTime" style="list-style: none;padding-right: 1em;x">
+          <li v-for="fight in fights" :key="fight.startTime" style="list-style: none;padding-right: 1em;">
             <log-item ref="logList" :fight-name="fight.name" :start-time-unix="parseInt(fight.startTime) + startTime"
-            :end-time-unix="parseInt(fight.endTime) + startTime" :difficulty="fight.difficulty"></log-item>
+            :end-time-unix="parseInt(fight.endTime) + startTime" :difficulty="fight.difficulty"
+            :is-playing="fight.id == selected" :id="fight.id"></log-item>
           </li>
         </ul>
       </el-scrollbar>
@@ -46,15 +47,22 @@ export default {
       inputValue:"",
       code:"",
       fights: [],
-      startTime: 0
+      startTime: 0,
+      selected: -1
     }
   },
   methods: {
     updateCode: function () {
-      this.code = this.inputValue;
+      this.selected = -1;
+      if(this.code == this.inputValue) {
+        this.$apollo.queries.logs.refetch();
+      } else {
+        this.code = this.inputValue;
+      }
     },
     selectFightCallBack: function (data) {
-      this.dateTime = data
+      this.dateTime = data.time;
+      this.selected = data.id;
     }
   },
   watch: {
@@ -90,6 +98,7 @@ export default {
           report(code: $code) {
             startTime,
             fights{
+              id,
               startTime,
               endTime,
               name,

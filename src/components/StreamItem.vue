@@ -13,7 +13,7 @@
   <div class="stream-item">
     <span class="stream-name">{{streamName}}</span>
     <el-button-group>
-      <el-button @click="onStreamSelect"  round><el-icon><VideoPlay /></el-icon></el-button>
+      <el-button @click="onStreamSelect" :loading="isPlaying" loading-icon="Select" icon="VideoPlay" round></el-button>
       <el-button @click="onSettingClicked"  round><el-icon><Setting /></el-icon></el-button>
       <el-button @click="onDeleteClicked" round><el-icon><Delete /></el-icon></el-button>
     </el-button-group>
@@ -27,36 +27,18 @@ export default {
   name: "StreamItem",
   data() {
     return {
-      streamName: "",
-      baseUrl: "",
-      privateKey: "",
-      latency: 0
+
     }
   },
   props: {
-    id: Number
+    id: Number,
+    streamName: String,
+    baseUrl: String,
+    privateKey: String,
+    latency: Number,
+    isPlaying: Boolean
   },
   methods: {
-    saveStream() {
-      return {
-        id: this.id,
-        streamName: this.streamName,
-        baseUrl: this.baseUrl,
-        privateKey: this.privateKey,
-        latency: this.latency
-      }
-    },
-    loadStream(data) {
-      for (let i = 0; i < data.length; i++) {
-        let dataKey = data[i];
-        if (dataKey.id == this.id) {
-          this.streamName = dataKey.streamName;
-          this.baseUrl = dataKey.baseUrl;
-          this.privateKey = dataKey.privateKey;
-          this.latency = dataKey.latency;
-        }
-      }
-    },
     onSettingClicked() {
       this.$EventBus.emit('changeSetting',
           {
@@ -74,20 +56,9 @@ export default {
       this.$store.commit('setting/setBaseUrl', this.baseUrl);
       this.$store.commit('setting/setPrivateKey', this.privateKey);
       this.$store.commit('setting/setLatency', this.latency);
+      this.$EventBus.emit('streamSelected', this.id);
       this.$EventBus.emit('updateUrl');
       ElMessage('已选择\''+this.streamName+'\'直播源');
-    },
-    setStreamName(streamName) {
-      this.streamName = streamName;
-    },
-    setBaseUrl(baseUrl){
-      this.baseUrl = baseUrl;
-    },
-    setPrivateKey(privateKey){
-      this.privateKey = privateKey;
-    },
-    setLatency(latency) {
-      this.latency = latency;
     }
   }
 }
@@ -110,5 +81,9 @@ export default {
 <style>
 .card > .el-card__body{
   padding: 0.5em 1em 0.5em 1em !important;
+}
+.is-loading {
+  -webkit-animation: none !important;
+  animation: none !important;
 }
 </style>
