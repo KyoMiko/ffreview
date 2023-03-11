@@ -10,7 +10,8 @@ import LogList from "@/components/LogList.vue";
       <el-container class="el_container">
         <el-aside width="25%" class="aside-area">
           <div class="logo-area">
-            <img src="/favicon.ico"/><span>狒狒回放</span>
+            <img src="/favicon.ico">
+            <div class="logo-text">狒狒回放</div>
           </div>
 
           <el-divider class="aside-divider"/>
@@ -60,6 +61,14 @@ body,
   height: 30px;
   line-height: 40px;
   padding: 2px;
+  display: flex;
+  flex-direction: row;
+  padding-top: 10px;
+}
+
+.logo-text{
+  line-height: 30px;
+  padding-left: 6px;
 }
 
 .log-list{
