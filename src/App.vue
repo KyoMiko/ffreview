@@ -10,7 +10,7 @@ import LogList from "@/components/LogList.vue";
       <el-container class="el_container">
         <el-aside width="25%" class="aside-area">
           <div class="logo-area">
-            <img src="favicon.ico">
+            <img src="/favicon.ico">
             <div class="logo-text">狒狒回放</div>
           </div>
 
