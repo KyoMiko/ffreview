@@ -1,14 +1,4 @@
 <template>
-<!-- <el-container>
-  <el-main>
-    <div>{{streamName}}</div>
-  </el-main>
-  <el-aside style="display: flex;flex-wrap: wrap;align-content: center;justify-content: center">
-    <el-icon @click="onStreamSelect"><VideoPlay /></el-icon>
-    <el-icon @click="onSettingClicked"><Setting /></el-icon>
-    <el-icon @click="onDeleteClicked"><Delete /></el-icon>
-  </el-aside>
-</el-container> -->
 <el-card class="card" shadow="hover">
   <div class="stream-item">
     <span class="stream-name">{{streamName}}</span>

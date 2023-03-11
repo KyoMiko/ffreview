@@ -12,11 +12,6 @@
   <div class="card-body">
     <el-scrollbar>
       <div v-show="!isSetting" >
-        <!-- <ul style="overflow: auto;height: 250px;padding-inline-start: 5px">
-          <li v-for="id in list" :key="id" style="list-style: none;box-shadow: -2px 2px 5px gray;margin-bottom: 5px">
-            <stream-item ref="streamList" :id="id"></stream-item>
-          </li>
-        </ul> -->
         <ul style="padding-inline-start: 0px">
           <li v-for="streamItem in streamList" :key="streamItem.id" style="list-style: none; padding-right: 1em;">
             <stream-item ref="streamList" :id="streamItem.id" :stream-name="streamItem.streamName"
@@ -100,7 +95,7 @@ export default {
       for (let i = 0; i < this.streamList.length; i++) {
         const streamItem = this.streamList[i];
         if (streamItem.id == data) {
-          this.streamList.splice(data,1);
+          this.streamList.splice(i,1);
         }
       }
       this.saveStreamList();

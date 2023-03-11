@@ -1,14 +1,4 @@
 <template>
-  <!-- <el-container>
-    <el-main>
-      <div>{{fightNameWithTrash}}</div>
-    </el-main>
-    <el-aside style="display: flex;flex-wrap: wrap;align-content: center;justify-content: center">
-      {{fightLength}}
-      <el-icon @click="onFightSelect"><VideoPlay /></el-icon>
-    </el-aside>
-  </el-container> -->
-
 <el-card class="card" shadow="hover">
   <div class="log-item">
     <span class="log-name">{{fightNameWithTrash}}</span>
