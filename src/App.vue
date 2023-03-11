@@ -8,15 +8,23 @@ import LogList from "@/components/LogList.vue";
   <div class="app_container">
     <div class="common_layout">
       <el-container class="el_container">
-        <el-aside width="25%">
-          <el-container>
-            <el-header height="400px" style="padding: 2px">
-              <stream-list style="height: 95%;width: 100%"/>
-            </el-header>
-            <el-footer height="calc(95% - 400px)" style="padding: 2px">
-              <log-list style="height: 95%;width: 100%"/>
-            </el-footer>
-          </el-container>
+        <el-aside width="25%" class="aside-area">
+          <div class="logo-area">
+            【这里可有logo】狒狒回放
+          </div>
+
+          <el-divider class="aside-divider"/>
+
+          <div class="stream-list"> 
+              <stream-list/>
+          </div>
+
+          <!-- <el-divider class="aside-divider"/> -->
+
+          <div class="log-list">
+            <log-list/>
+          </div>
+
         </el-aside>
         <el-main>
           <review-player style="height: 95%;width: 100%"/>
@@ -34,5 +42,30 @@ body,
 .app_container,
 .common_layout{
   height: 100vh;
+}
+.stream-list{
+  height: 400px;
+  padding: 2px;
+  margin-bottom: 1em;
+}
+.aside-area{
+  background-color: #202020;
+  padding-right: 0.5em;
+  padding-left: 0.5em;
+}
+.aside-divider{
+  margin: 12px 0;
+}
+.logo-area{
+  height: 30px;
+  line-height: 40px;
+  padding: 2px;
+}
+
+.log-list{
+  height:auto;
+  max-height: calc(90% - 450px);
+  padding: 2px;
+  margin-bottom: 2em;
 }
 </style>

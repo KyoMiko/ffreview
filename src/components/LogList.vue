@@ -1,22 +1,36 @@
 <template>
-  <div style="width: 100%">
-    <el-date-picker
-        v-model="dateTime"
-        type="datetimerange"
-        range-separator="到"
-        start-placeholder="直播开始时间"
-        end-placeholder="直播结束时间"
-        value-format="YYYY-MM-DD HH:mm:ss"
-    />
-    <el-input v-model="inputValue"  placeholder="获取指定logs，输入如7a2WG3nk9Dyx8q6V"></el-input>
-    <el-button @click="updateCode">查询</el-button>
-    <ul style="overflow: auto;height: 250px;padding-inline-start: 5px">
-      <li v-for="fight in fights" :key="fight.startTime" style="list-style: none;box-shadow: -2px 2px 5px gray;margin-bottom: 5px">
-        <log-item ref="logList" :fight-name="fight.name" :start-time-unix="parseInt(fight.startTime) + startTime"
-        :end-time-unix="parseInt(fight.endTime) + startTime" :difficulty="fight.difficulty"></log-item>
-      </li>
-    </ul>
-  </div>
+  <el-card class="log-list">
+    <template #header>
+      <div class="header-text">日志列表</div>
+    </template>
+    <div style="width: 100%">
+      <el-date-picker
+          v-model="dateTime"
+          type="datetimerange"
+          range-separator="到"
+          start-placeholder="直播开始时间"
+          end-placeholder="直播结束时间"
+          value-format="YYYY-MM-DD HH:mm:ss"
+          style="width: auto; margin-bottom: 10px;"
+      />
+      <el-input v-model="inputValue"  placeholder="获取指定logs，输入如7a2WG3nk9Dyx8q6V">
+        <template #append>
+          <el-button @click="updateCode"><el-icon><Search /></el-icon></el-button>
+        </template>
+      </el-input>
+
+      <el-divider class="aside-divider"/>
+      
+      <el-scrollbar>
+        <ul style="padding-inline-start: 0px; height: 220px;">
+          <li v-for="fight in fights" :key="fight.startTime" style="list-style: none;padding-right: 1em;x">
+            <log-item ref="logList" :fight-name="fight.name" :start-time-unix="parseInt(fight.startTime) + startTime"
+            :end-time-unix="parseInt(fight.endTime) + startTime" :difficulty="fight.difficulty"></log-item>
+          </li>
+        </ul>
+      </el-scrollbar>
+    </div>
+  </el-card>
 </template>
 
 <script>
@@ -98,4 +112,11 @@ export default {
 </script>
 
 <style scoped>
+.header-text{
+  margin-bottom: 10px;
+}
+
+.aside-divider{
+  margin: 12px 0;
+}
 </style>

@@ -8,6 +8,7 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue';
 import locale from 'element-plus/lib/locale/lang/zh-cn';
 import {createApolloProvider} from "@vue/apollo-option";
 import apolloClient from './apolloClient'
+import 'element-plus/theme-chalk/dark/css-vars.css'
 
 const app = createApp(App);
 const apolloProvider = createApolloProvider({
