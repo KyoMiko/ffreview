@@ -8,7 +8,7 @@ import LogList from "@/components/LogList.vue";
   <div class="app_container">
     <div class="common_layout">
       <el-container class="el_container">
-        <el-aside width="25%" class="aside-area">
+        <el-aside class="aside-area" width="25%">
           <div class="logo-area">
             <img src="/favicon.ico">
             <div class="logo-text">狒狒回放</div>
@@ -16,8 +16,8 @@ import LogList from "@/components/LogList.vue";
 
           <el-divider class="aside-divider"/>
 
-          <div class="stream-list"> 
-              <stream-list/>
+          <div class="stream-list">
+            <stream-list/>
           </div>
 
           <!-- <el-divider class="aside-divider"/> -->
@@ -41,23 +41,27 @@ body,
 #app,
 .el_container,
 .app_container,
-.common_layout{
+.common_layout {
   height: 100vh;
 }
-.stream-list{
+
+.stream-list {
   height: 400px;
   padding: 2px;
   margin-bottom: 1em;
 }
-.aside-area{
+
+.aside-area {
   background-color: #202020;
   padding-right: 0.5em;
   padding-left: 0.5em;
 }
-.aside-divider{
+
+.aside-divider {
   margin: 12px 0;
 }
-.logo-area{
+
+.logo-area {
   height: 30px;
   line-height: 40px;
   padding: 2px;
@@ -66,13 +70,13 @@ body,
   padding-top: 10px;
 }
 
-.logo-text{
+.logo-text {
   line-height: 30px;
   padding-left: 6px;
 }
 
-.log-list{
-  height:auto;
+.log-list {
+  height: auto;
   max-height: calc(90% - 450px);
   padding: 2px;
   margin-bottom: 2em;
