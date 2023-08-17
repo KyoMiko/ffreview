@@ -1,26 +1,30 @@
 <template>
-  <easy-player :live="live" :videoUrl="url" style="height: 100%;width: 100%">
-  </easy-player>
+  <video controls ref="video" style="height: 100%;width: 100%"></video>
 </template>
 
 <script>
-import { mapGetters, mapState } from "vuex";
+import Hls from 'hls.js/dist/hls.min';
 
 export default {
   name: "ReviewPlayer",
   data() {
-    return {}
+    return {
+      hls: new Hls()
+    }
   },
-  computed: {
-    ...mapState({
-      live: state => state.setting.aliyunols
-    }),
-    ...mapGetters({
-      url: 'setting/streamUrl'
-    })
+  methods: {
+    updateUrl: function () {
+      this.hls.destroy();
+      this.hls = new Hls();
+      const url = this.$store.getters['setting/streamUrl'];
+      console.log(url)
+      this.hls.loadSource(url);
+      this.hls.attachMedia(this.$refs.video);
+    }
   },
   mounted() {
-    document.addEventListener("visibilitychange", () => {
+    this.$EventBus.on('updateUrl',this.updateUrl);
+    document.addEventListener("visibilitychange",()=>{
       if (document.hidden) {
         this.$refs.video.pause();
       }
