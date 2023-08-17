@@ -1,5 +1,6 @@
 <template>
-  <easy-player :live="live" :stretch="true" :videoUrl="url" alt="请选择直播源"></easy-player>
+  <easy-player :live="live" :videoUrl="url" style="height: 100%;width: 100%">
+  </easy-player>
 </template>
 
 <script>
