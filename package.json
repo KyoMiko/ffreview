@@ -13,16 +13,18 @@
     "@vue/apollo-option": "^4.0.0-beta.4",
     "axios": "^1.3.4",
     "element-plus": "^2.2.36",
-    "graphql": "^16.6.0",
+    "graphql": "^16.8.1",
     "graphql-tag": "^2.12.6",
-    "hls.js": "^1.3.4",
     "js-md5": "^0.7.3",
+    "lodash": "^4.17.21",
     "mitt": "^3.0.0",
     "vue": "^3.2.47",
-    "vuex": "^4.0.2"
+    "vuex": "^4.0.2",
+    "xgplayer": "^3.0.9",
+    "xgplayer-hls": "^3.0.9"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.0.0",
-    "vite": "^4.1.4"
+    "vite": "^4.4.9"
   }
 }

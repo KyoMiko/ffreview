@@ -1,36 +1,36 @@
 <template>
-<el-card class="card" shadow="hover">
-  <div class="log-item">
-    <span class="log-name">{{fightNameWithTrash}}</span>
-    <el-button-group>
-      <el-button @click="onFightSelect" :class="isPlaying ? 'is-loading' : ''" round>
-        {{fightLength}}&nbsp;
-        <el-icon v-show="isPlaying"><Select /></el-icon>
-        <el-icon v-show="!isPlaying"><CaretRight /></el-icon>
-      </el-button>
-    </el-button-group>
-  </div>
-</el-card>
+  <el-card class="card" shadow="hover">
+    <div class="log-item">
+      <span class="log-name">{{ fightNameWithTrash }}</span>
+      <el-button-group>
+        <el-button :class="isPlaying ? 'is-loading' : ''" round @click="onFightSelect">
+          {{ fightLength }}&nbsp;
+          <el-icon v-show="isPlaying"><Select/></el-icon>
+          <el-icon v-show="!isPlaying">
+            <CaretRight/>
+          </el-icon>
+        </el-button>
+      </el-button-group>
+    </div>
+  </el-card>
 </template>
 
 <script>
 export default {
   name: "LogItem",
   data() {
-    return {
-
-    }
+    return {}
   },
   props: {
     id: Number,
     fightName: String,
     startTimeUnix: Number,
     endTimeUnix: Number,
-    difficulty: String,
+    difficulty: Number,
     isPlaying: Boolean
-  },methods: {
+  }, methods: {
     onFightSelect: function () {
-      this.$EventBus.emit('selectFight',{time:[this.startTimeHuman,this.endTimeHuman],id: this.id});
+      this.$EventBus.emit('selectFight', {time: [this.startTimeHuman, this.endTimeHuman], id: this.id});
     },
     unixToHuman: function (date) {
       let year = date.getFullYear();
@@ -48,21 +48,21 @@ export default {
     }
   },
   computed: {
-    fightLength () {
+    fightLength() {
       let ms = this.endTimeUnix - this.startTimeUnix;
       let m = parseInt(ms / 1000 / 60 % 60);
-      let s = parseInt(ms / 1000  % 60);
+      let s = parseInt(ms / 1000 % 60);
       m = m < 10 ? "0" + m : m;
       s = s < 10 ? "0" + s : s;
       return `${m}:${s}`
     },
-    startTimeHuman () {
+    startTimeHuman() {
       return this.unixToHuman(new Date(this.startTimeUnix - 30000));
     },
-    endTimeHuman () {
+    endTimeHuman() {
       return this.unixToHuman(new Date(this.endTimeUnix + 10000));
     },
-    fightNameWithTrash () {
+    fightNameWithTrash() {
       return this.difficulty ? this.fightName : this.fightName + ' (Trash)'
     }
   }
@@ -70,21 +70,22 @@ export default {
 </script>
 
 <style scoped>
-.log-item{
+.log-item {
   display: flex;
   justify-content: space-between;
 }
-.log-name{
+
+.log-name {
   line-height: 30px;
 }
 
-.card{
+.card {
   margin-bottom: 1em;
 }
 </style>
 
 <style>
-.card > .el-card__body{
+.card > .el-card__body {
   padding: 0.5em 1em 0.5em 1em !important;
 }
 </style>

@@ -1,32 +1,63 @@
 <template>
-  <video controls ref="video" style="height: 100%;width: 100%"></video>
+  <div id="video" style="height: 100%;width: 100%"></div>
 </template>
 
 <script>
-import Hls from 'hls.js/dist/hls.min';
+import Player, { Events } from 'xgplayer';
+import HlsPlugin from 'xgplayer-hls'
+import 'xgplayer/dist/index.min.css';
 
 export default {
   name: "ReviewPlayer",
   data() {
     return {
-      hls: new Hls()
+      player: null
     }
   },
   methods: {
     updateUrl: function () {
-      this.hls.destroy();
-      this.hls = new Hls();
       const url = this.$store.getters['setting/streamUrl'];
-      console.log(url)
-      this.hls.loadSource(url);
-      this.hls.attachMedia(this.$refs.video);
+      const isLive = this.$store.getters['setting/isLive'];
+      const config = {
+        url: url,
+        isLive: isLive
+      };
+      this.player.playNext(config);
+      console.log(config)
     }
   },
   mounted() {
-    this.$EventBus.on('updateUrl',this.updateUrl);
-    document.addEventListener("visibilitychange",()=>{
+    this.player = new Player({
+      id: 'video',
+      height: '100%',
+      width: '100%',
+      lang: 'zh-cn',
+      autoplay: true,
+      pip: true,
+      keyShortcut: "on",
+      plugins: [HlsPlugin]
+    })
+    this.player.on(Events.LOADED_DATA, () => {
+      if (!this.player.config.isLive) {
+        const duration = this.player.duration
+        const progress = this.player.getPlugin('progresspreview');
+        progress.deleteAllDots();
+        progress.createDot({
+          id: 1,
+          time: 30,
+          text: '战斗开始'
+        });
+        progress.createDot({
+          id: 2,
+          time: parseInt((duration - 10) + ""),
+          text: '战斗结束'
+        });
+      }
+    })
+    this.$EventBus.on('updateUrl', this.updateUrl);
+    document.addEventListener("visibilitychange", () => {
       if (document.hidden) {
-        this.$refs.video.pause();
+        this.player.pause();
       }
     })
   }

@@ -5,8 +5,8 @@ import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import mitt from "mitt";
 import * as ElementPlusIconsVue from '@element-plus/icons-vue';
-import locale from 'element-plus/lib/locale/lang/zh-cn';
-import {createApolloProvider} from "@vue/apollo-option";
+import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
+import { createApolloProvider } from "@vue/apollo-option";
 import apolloClient from './apolloClient'
 import 'element-plus/theme-chalk/dark/css-vars.css'
 
@@ -20,5 +20,5 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 }
 app.config.globalProperties.$EventBus = new mitt();
 app.use(store);
-app.use(ElementPlus, {locale});
+app.use(ElementPlus, {locale: zhCn});
 app.mount('#app');

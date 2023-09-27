@@ -52,6 +52,9 @@ const getters = {
             }
         }
         return url;
+    },
+    isLive(state) {
+        return !(state.startTime && state.endTime);
     }
 }
 export default {
