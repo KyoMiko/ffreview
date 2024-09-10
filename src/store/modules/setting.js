@@ -54,7 +54,7 @@ const getters = {
         return url;
     },
     isLive(state) {
-        return !(state.startTime && state.endTime);
+        return !(state.startTime && state.endTime && url.match("^http.*m3u8$"));
     }
 }
 export default {
