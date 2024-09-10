@@ -20,9 +20,9 @@
     "mitt": "^3.0.0",
     "vue": "^3.2.47",
     "vuex": "^4.0.2",
-    "xgplayer": "^3.0.9",
+    "xgplayer": "^3.0.20",
     "xgplayer-flv": "^3.0.20",
-    "xgplayer-hls": "^3.0.9"
+    "xgplayer-hls": "^3.0.20"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.0.0",
