@@ -55,6 +55,9 @@ const getters = {
     },
     isLive(state) {
         return !(state.startTime && state.endTime && url.match("^http.*m3u8$"));
+    },
+    type(state) {
+        return state.baseUrl.match("^http.*m3u8$") ? 'hls' : 'http-flv';
     }
 }
 export default {

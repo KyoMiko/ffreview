@@ -20,46 +20,58 @@ export default {
     updateUrl: function () {
       const url = this.$store.getters['setting/streamUrl'];
       const isLive = this.$store.getters['setting/isLive'];
-      const config = {
+      const type = this.$store.getters['setting/type'];
+      let plugins = [];
+      switch (type) {
+        case 'hls':
+          plugins = [HlsPlugin];
+          break;
+        case 'flv':
+          plugins = [FlvPlugin];
+          break;
+        default:
+          plugins = [];
+          break;
+      }
+      if(this.player) {
+        this.player.destroy();
+      }
+      this.player = new Player({
+        id: 'video',
+        height: '100%',
+        width: '100%',
+        lang: 'zh-cn',
+        autoplay: true,
+        pip: true,
+        keyShortcut: "on",
         url: url,
-        isLive: isLive
-      };
-      this.player.playNext(config);
-      console.log(config)
+        isLive: isLive,
+        plugins: plugins
+      })
+      this.player.on(Events.LOADED_DATA, () => {
+        if (!this.player.config.isLive) {
+          const duration = this.player.duration
+          const progress = this.player.getPlugin('progresspreview');
+          progress.deleteAllDots();
+          progress.createDot({
+            id: 1,
+            time: 30,
+            text: '战斗开始'
+          });
+          progress.createDot({
+            id: 2,
+            time: parseInt((duration - 10) + ""),
+            text: '战斗结束'
+          });
+        }
+      })
+      this.player.on(Events.PIP_CHANGE, (isPip)=> {
+        this.isPip = isPip;
+      })
     }
   },
   mounted() {
-    this.player = new Player({
-      id: 'video',
-      height: '100%',
-      width: '100%',
-      lang: 'zh-cn',
-      autoplay: true,
-      pip: true,
-      keyShortcut: "on",
-      plugins: [HlsPlugin,FlvPlugin]
-    })
-    this.player.on(Events.LOADED_DATA, () => {
-      if (!this.player.config.isLive) {
-        const duration = this.player.duration
-        const progress = this.player.getPlugin('progresspreview');
-        progress.deleteAllDots();
-        progress.createDot({
-          id: 1,
-          time: 30,
-          text: '战斗开始'
-        });
-        progress.createDot({
-          id: 2,
-          time: parseInt((duration - 10) + ""),
-          text: '战斗结束'
-        });
-      }
-    })
     this.$EventBus.on('updateUrl', this.updateUrl);
-    this.player.on(Events.PIP_CHANGE, (isPip)=> {
-      this.isPip = isPip;
-    })
     document.addEventListener("visibilitychange", () => {
       if (this.isPip) {
         return;
