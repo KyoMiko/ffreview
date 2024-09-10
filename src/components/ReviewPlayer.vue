@@ -12,7 +12,8 @@ export default {
   name: "ReviewPlayer",
   data() {
     return {
-      player: null
+      player: null,
+      isPip: false
     }
   },
   methods: {
@@ -56,9 +57,17 @@ export default {
       }
     })
     this.$EventBus.on('updateUrl', this.updateUrl);
+    this.player.on(Events.PIP_CHANGE, (isPip)=> {
+      this.isPip = isPip;
+    })
     document.addEventListener("visibilitychange", () => {
+      if (this.isPip) {
+        return;
+      }
       if (document.hidden) {
         this.player.pause();
+      } else {
+        this.player.play();
       }
     })
   }
