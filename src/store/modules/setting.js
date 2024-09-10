@@ -39,7 +39,7 @@ const getters = {
     },
     streamUrl(state, getters) {
         let url = state.baseUrl
-        if (url) {
+        if (url && url.match("^http.*m3u8$")) {
             if (state.privateKey) {
                 url += '?auth_key=' + getters.authKey;
                 if (state.startTime && state.endTime) {

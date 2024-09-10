@@ -5,6 +5,7 @@
 <script>
 import Player, { Events } from 'xgplayer';
 import HlsPlugin from 'xgplayer-hls'
+import FlvPlugin from 'xgplayer-flv'
 import 'xgplayer/dist/index.min.css';
 
 export default {
@@ -35,7 +36,7 @@ export default {
       autoplay: true,
       pip: true,
       keyShortcut: "on",
-      plugins: [HlsPlugin]
+      plugins: [HlsPlugin,FlvPlugin]
     })
     this.player.on(Events.LOADED_DATA, () => {
       if (!this.player.config.isLive) {

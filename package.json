@@ -21,6 +21,7 @@
     "vue": "^3.2.47",
     "vuex": "^4.0.2",
     "xgplayer": "^3.0.9",
+    "xgplayer-flv": "^3.0.20",
     "xgplayer-hls": "^3.0.9"
   },
   "devDependencies": {
