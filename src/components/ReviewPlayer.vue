@@ -18,6 +18,7 @@ export default {
   },
   methods: {
     updateUrl: function () {
+      debugger
       const url = this.$store.getters['setting/streamUrl'];
       const isLive = this.$store.getters['setting/isLive'];
       const type = this.$store.getters['setting/type'];
@@ -26,7 +27,7 @@ export default {
         case 'hls':
           plugins = [HlsPlugin];
           break;
-        case 'flv':
+        case 'http-flv':
           plugins = [FlvPlugin];
           break;
         default:
