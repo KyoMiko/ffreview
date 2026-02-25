@@ -1,14 +1,16 @@
+import { toBase64, fromBase64 } from 'js-base64';
+
 /**
  * 将流对象编码为 Base64 字符串（不含 id 字段）
  */
 export function encodeStream(streamObj) {
   const data = {
-    streamName: streamObj.streamName,
-    baseUrl: streamObj.baseUrl,
-    privateKey: streamObj.privateKey,
-    latency: streamObj.latency
+    streamName: streamObj.streamName ?? '',
+    baseUrl: streamObj.baseUrl ?? '',
+    privateKey: streamObj.privateKey ?? '',
+    latency: isFinite(streamObj.latency) ? Number(streamObj.latency) : 0
   };
-  return btoa(unescape(encodeURIComponent(JSON.stringify(data))));
+  return toBase64(JSON.stringify(data));
 }
 
 /**
@@ -19,8 +21,7 @@ export function decodeStreamFromUrl() {
   const encoded = params.get('stream');
   if (!encoded) return null;
   try {
-    const json = decodeURIComponent(escape(atob(encoded)));
-    return JSON.parse(json);
+    return JSON.parse(fromBase64(encoded));
   } catch (e) {
     console.error('[shareUtils] Failed to decode stream from URL:', e);
     return null;

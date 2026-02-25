@@ -133,7 +133,8 @@ export default {
 
     // 解析 URL 中的分享参数，自动添加并播放
     const sharedStream = decodeStreamFromUrl();
-    if (sharedStream && sharedStream.baseUrl) {
+    debugger
+    if (sharedStream) {
       const existing = this.streamList.find(s => s.baseUrl === sharedStream.baseUrl);
       let targetId;
       if (existing) {
