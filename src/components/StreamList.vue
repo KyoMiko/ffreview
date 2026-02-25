@@ -46,6 +46,7 @@
 <script>
 import StreamItem from "@/components/StreamItem.vue";
 import {nextTick} from "vue";
+import {decodeStreamFromUrl} from "@/utils/shareUtils";
 export default {
   name: "StreamList",
   components: {StreamItem},
@@ -122,12 +123,41 @@ export default {
       localStorage.clear();
       location.reload();
     }
-  },mounted() {
+  },
+  async mounted() {
     this.$EventBus.on('changeSetting',this.changeSettingCallBack)
     this.$EventBus.on('deleteStream',this.deleteStreamCallBack)
     this.$EventBus.on('streamSelected', this.streamSelectedCallBack);
     this.streamList = JSON.parse(localStorage.getItem("streamList"));
     this.streamList = this.streamList ? this.streamList : [];
+
+    // 解析 URL 中的分享参数，自动添加并播放
+    const sharedStream = decodeStreamFromUrl();
+    if (sharedStream && sharedStream.baseUrl) {
+      const existing = this.streamList.find(s => s.baseUrl === sharedStream.baseUrl);
+      let targetId;
+      if (existing) {
+        targetId = existing.id;
+      } else {
+        const maxId = this.streamList.length ? Math.max(...this.streamList.map(s => s.id)) : 0;
+        targetId = maxId + 1;
+        this.streamList.push({
+          id: targetId,
+          streamName: sharedStream.streamName || '来自分享的直播源',
+          baseUrl: sharedStream.baseUrl,
+          privateKey: sharedStream.privateKey || '',
+          latency: sharedStream.latency || 0
+        });
+        this.saveStreamList();
+      }
+      this.$store.commit('setting/setBaseUrl', sharedStream.baseUrl);
+      this.$store.commit('setting/setPrivateKey', sharedStream.privateKey || '');
+      this.$store.commit('setting/setLatency', sharedStream.latency || 0);
+      await nextTick();
+      this.$EventBus.emit('streamSelected', targetId);
+      this.$EventBus.emit('updateUrl');
+      history.replaceState({}, '', window.location.pathname);
+    }
   }
 }
 </script>

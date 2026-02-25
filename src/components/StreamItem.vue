@@ -4,6 +4,7 @@
     <span class="stream-name">{{streamName}}</span>
     <el-button-group>
       <el-button @click="onStreamSelect" :loading="isPlaying" loading-icon="Select" icon="VideoPlay" round></el-button>
+      <el-button @click="onShareClicked" round><el-icon><Share /></el-icon></el-button>
       <el-button @click="onSettingClicked"  round><el-icon><Setting /></el-icon></el-button>
       <el-button @click="onDeleteClicked" round><el-icon><Delete /></el-icon></el-button>
     </el-button-group>
@@ -13,6 +14,7 @@
 
 <script>
 import {ElMessage} from "element-plus";
+import {generateShareUrl, copyToClipboard} from "@/utils/shareUtils";
 export default {
   name: "StreamItem",
   data() {
@@ -49,6 +51,16 @@ export default {
       this.$EventBus.emit('streamSelected', this.id);
       this.$EventBus.emit('updateUrl');
       ElMessage('已选择\''+this.streamName+'\'直播源');
+    },
+    async onShareClicked() {
+      const url = generateShareUrl({
+        streamName: this.streamName,
+        baseUrl: this.baseUrl,
+        privateKey: this.privateKey,
+        latency: this.latency
+      });
+      await copyToClipboard(url);
+      ElMessage.success('已复制 \'' + this.streamName + '\' 的分享链接');
     }
   }
 }
