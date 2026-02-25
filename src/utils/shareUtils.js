@@ -52,5 +52,5 @@ export async function copyToClipboard(text) {
  */
 export function generateShareUrl(streamObj) {
   const encoded = encodeStream(streamObj);
-  return `${window.location.origin}${window.location.pathname}?stream=${encoded}`;
+  return `${window.location.origin}${window.location.pathname}?stream=${encodeURIComponent(encoded)}`;
 }
